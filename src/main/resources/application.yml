@@ -1,0 +1,5 @@
+ehcache:
+  store:
+    max-heap-size: 1000
+    memory-off-heap: 30
+  time-to-live: 15
