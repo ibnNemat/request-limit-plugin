@@ -18,7 +18,8 @@ import java.lang.reflect.Method;
 public class LimitReflectionServiceImpl implements LimitReflectionService {
 
     @Override
-    public Object getField(String fieldName, Class<?> requestClass, Object requestData) throws IllegalAccessException, NoSuchFieldException {
+    public Object getFieldValue(String fieldName, Object requestData) throws IllegalAccessException, NoSuchFieldException {
+        Class<?> requestClass = requestData.getClass();
         Field field;
         try {
             field = requestClass.getDeclaredField(fieldName);
