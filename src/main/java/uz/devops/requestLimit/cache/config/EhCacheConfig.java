@@ -31,7 +31,7 @@ public class EhCacheConfig {
                 .build(true);
     }
  
-    @Bean
+    @Bean(EHCACHE_BEAN_WITH_EXPIRE_TIME)
     public Cache<String, LocalDateTime> ehcacheWithExpiredTime() {
         var cache = requestLimitProperties.getCache();
         var timeUnit = TimeUnit.valueOf(cache.getTimeUnit().name());
@@ -54,7 +54,7 @@ public class EhCacheConfig {
         );
     }
 
-    @Bean
+    @Bean(EHCACHE_BEAN_WITHOUT_EXPIRE_TIME)
     public Cache<String, LocalDateTime> ehcacheWithoutExpiredTime() {
         var cache = requestLimitProperties.getCache();
 

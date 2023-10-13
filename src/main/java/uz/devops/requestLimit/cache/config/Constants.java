@@ -1,6 +1,6 @@
 package uz.devops.requestLimit.cache.config;
 
-    public class Constants {
+public class Constants {
     public static final String EHCACHE_MANAGER_BEAN = "EHCACHE_MANAGER_BEAN";
     public static final String EHCACHE_BEAN_WITH_EXPIRE_TIME = "EHCACHE_BEAN_WITH_EXPIRE_TIME";
     public static final String EHCACHE_BEAN_WITHOUT_EXPIRE_TIME = "EHCACHE_BEAN_WITHOUT_EXPIRE_TIME";
