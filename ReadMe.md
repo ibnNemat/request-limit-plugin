@@ -41,6 +41,7 @@ Now we will generate a unique key from the request parameters to store in ehCach
 The relationship between requestLimit and p2pPayRequest is that requestLimit provides field names indicating
 which fields from p2pPayRequest should be used to create the cache key. That is, the requestLimit parameter is used to determine which fields 
 from p2pPayRequest should be included to generate for the ehcache key. To get a list of field names, we call requestLimit.keys (Figure 1.6).
+
 ![img_1.png](img_1.png)
 
 From the list of keys we take each of them to extract the corresponding values from p2pPayRequest. 
@@ -52,7 +53,8 @@ Thus, we generated a unique key for storage in ehcache. Now we can set a limit f
 ![img_9.png](img_9.png)
 
 You can also pass the parameter 'timeToLive' from the annotation 'requestLimit' to the method 
-ehCacheService.setRequestLimit(requestKey, requestLimit.timeToLive(), requestLimit.timeUnit()). Figure 1.8:
+ehCacheService.setRequestLimit(requestKey, requestLimit.timeToLive(), requestLimit.timeUnit()). Figure 1.8.
+
 ![img_5.png](img_5.png)
 
 To see how the request limit sets for the methods you can look at [ehCacheService](src/main/java/uz/devops/requestLimit/cache/service/EhCacheService.java) in this project.
