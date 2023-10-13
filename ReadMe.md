@@ -16,7 +16,8 @@ Then write a @RequestLimit annotation above your method where you need to set th
 Now we need to open the class aspect in our project(Figure 1.2).
 You can read more about Spring AspectJ [here](https://www.baeldung.com/aspectj) and [here](https://habr.com/ru/articles/428548/).
 
-![img.png](img.png)
+![img_7.png](img_7.png)
+![img_8.png](img_8.png)
 
 In this aspect is written method beforeCheckProcess, which will work before our method(p2pPay), where we set the limit using @RequestLimit.
 Please note that this method is only for requests with the P2pPayRequest parameter. 
@@ -48,6 +49,10 @@ based on the field names from requestLimit. These values are then added to strin
 
 Thus, we generated a unique key for storage in ehcache. Now we can set a limit for the 'p2pPay' method(Figure 1.7).
 
+![img_9.png](img_9.png)
+
+You can also pass the parameter 'timeToLive' from the annotation 'requestLimit' to the method 
+ehCacheService.setRequestLimit(requestKey, requestLimit.timeToLive(), requestLimit.timeUnit()). Figure 1.8:
 ![img_5.png](img_5.png)
 
 To see how the request limit sets for the methods you can look at [ehCacheService](src/main/java/uz/devops/requestLimit/cache/service/EhCacheService.java) in this project.
