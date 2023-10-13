@@ -12,13 +12,15 @@
 	<packaging>jar</packaging>
 	<groupId>uz.devops.requestLimit</groupId>
 	<artifactId>request-limit</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.3</version>
 	<name>request-limit</name>
 	<description>Plugin to set limit for clients request</description>
 	<properties>
 		<java.version>11</java.version>
 		<lombok.version>1.18.24</lombok.version>
 		<spring-boot.version>2.7.15</spring-boot.version>
+		<downloadSources>true</downloadSources>
+		<downloadJavadocs>true</downloadJavadocs>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -52,7 +54,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
-			<version>3.1.3</version>
 		</dependency>
 
 		<dependency>

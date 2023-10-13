@@ -1,5 +1,9 @@
-ehcache:
-  store:
-    max-heap-size: 1000
-    memory-off-heap: 30
-  time-to-live: 15
+requestLimit:
+  p2pImpl: p2pRequestLimitAspect
+  cache:
+    max-heap-size: 1000   # maximum count that can be stored in memory
+    memory-off-heap: 30   # ehcache memory size in Mb
+    time-to-live: 15   # lifetime in cache memory in seconds
+    time-unit: SECONDS
+  username-skip-list: # list of users who can send requests without limit
+    - admin

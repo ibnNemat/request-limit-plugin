@@ -5,48 +5,68 @@ import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
+import org.ehcache.config.builders.ExpiryPolicyBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.config.units.MemoryUnit;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-import static uz.devops.requestLimit.cache.config.Constants.EHCACHE_MANAGER_BEAN_NAME;
-import static uz.devops.requestLimit.cache.config.Constants.P2P_PAY_EHCACHE_BEAN;
+import static uz.devops.requestLimit.cache.config.Constants.*;
 
 @EnableCaching
 @Configuration
 @AllArgsConstructor
 public class EhCacheConfig {
 
-    private final EhcacheProperties ehcacheProperties;
-    private final Random RANDOM = new Random();
-    @Bean(name = EHCACHE_MANAGER_BEAN_NAME, destroyMethod = "")
+    private final RequestLimitProperties requestLimitProperties;
+
+    @Bean(name = EHCACHE_MANAGER_BEAN, destroyMethod = "")
     public CacheManager cacheManager() {
         return CacheManagerBuilder.newCacheManagerBuilder()
                 .build(true);
     }
  
     @Bean
-    public Cache<String, LocalDateTime> ehcache() {
+    public Cache<String, LocalDateTime> ehcacheWithExpiredTime() {
+        var cache = requestLimitProperties.getCache();
+        var timeUnit = TimeUnit.valueOf(cache.getTimeUnit().name());
+
         return cacheManager().createCache(
-                P2P_PAY_EHCACHE_BEAN + "_" + RANDOM.nextInt(),
+                EHCACHE_BEAN_WITH_EXPIRE_TIME,
                 CacheConfigurationBuilder.newCacheConfigurationBuilder(
                         String.class,
                         LocalDateTime.class,
                         ResourcePoolsBuilder
-                                .heap(ehcacheProperties.getStore().getMaxHeapSize())
-                                .offheap(ehcacheProperties.getStore().getMemoryOffHeap(), MemoryUnit.MB)
+                                .heap(cache.getMaxHeapSize())
+                                .offheap(cache.getMemoryOffHeap(), MemoryUnit.MB)
                 )
-//                        .withExpiry(
-//                            ExpiryPolicyBuilder
-//                                .expiry()
-//                                .create(Duration.ofHours(ehcacheProperties.getTimeToLive()))
-//                                .build()
-//                        )
+                    .withExpiry(
+                        ExpiryPolicyBuilder
+                            .expiry()
+                            .create(Duration.of(cache.getTimeToLive(), timeUnit.toChronoUnit()))
+                            .build()
+                    )
+        );
+    }
+
+    @Bean
+    public Cache<String, LocalDateTime> ehcacheWithoutExpiredTime() {
+        var cache = requestLimitProperties.getCache();
+
+        return cacheManager().createCache(
+                EHCACHE_BEAN_WITHOUT_EXPIRE_TIME,
+                CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                                String.class,
+                                LocalDateTime.class,
+                                ResourcePoolsBuilder
+                                        .heap(cache.getMaxHeapSize())
+                                        .offheap(cache.getMemoryOffHeap(), MemoryUnit.MB)
+                        )
         );
     }
 }
