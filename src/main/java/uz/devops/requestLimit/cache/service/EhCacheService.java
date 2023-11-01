@@ -31,19 +31,9 @@ public abstract class EhCacheService {
      * @param requestKey - the generated key from request parameters.
      * If you want to set a limit for your method without request parameters,
      * then you can generate one constant key and use this key for each request to set the limit.
-     * @param timeToLive - the time in cache memory
-     * @param timeUnit - the timeUnit of timeToLive
      * @param requestDateTimeCache - the cache in which request keys are stored
      */
-    public void throwIfExistsWithRequestKey(String requestKey, Long timeToLive, TimeUnit timeUnit, Cache<String, LocalDateTime> requestDateTimeCache) {
-        log.debug("Check request key: {} in ehcache", requestKey);
-        if (!requestDateTimeCache.containsKey(requestKey)) {
-            var localDateTime = LocalDateTime.now().plus(timeToLive, timeUnit.toChronoUnit());
-            requestDateTimeCache.put(requestKey, localDateTime);
-            log.debug("Created new cache with dataTime: {}", localDateTime);
-            return;
-        }
-
+    public void throwIfExistsWithRequestKey(String requestKey, Cache<String, LocalDateTime> requestDateTimeCache) {
         var localDateTime = requestDateTimeCache.get(requestKey);
         var currentTime = LocalDateTime.now();
         if (localDateTime.isAfter(currentTime)) {

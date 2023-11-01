@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 @Documented
 public @interface RequestLimit {
     String[] keys() default {};
-    long timeToLive() default 15L;
+    long timeToLive() default 0L;
     TimeUnit timeUnit() default TimeUnit.SECONDS;
     String paramName() default "";
 }

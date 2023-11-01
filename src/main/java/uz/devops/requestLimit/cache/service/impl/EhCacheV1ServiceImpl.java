@@ -22,9 +22,16 @@ public class EhCacheV1ServiceImpl extends EhCacheService {
 
     @Override
     public void setRequestLimit(String requestKey, Long timeToLive, TimeUnit timeUnit) {
-        throwIfExistsWithRequestKey(requestKey, timeToLive, timeUnit, requestDateTimeCache);
+        log.debug("Check request key in ehcache. RequestKey: {}", requestKey);
 
-        requestDateTimeCache.remove(requestKey);
-        log.debug("Deleted cache with key: {}", requestKey);
+        if (!requestDateTimeCache.containsKey(requestKey)) {
+            var localDateTime = LocalDateTime.now().plus(timeToLive, timeUnit.toChronoUnit());
+            requestDateTimeCache.put(requestKey, localDateTime);
+            log.debug("Created new cache with dataTime: {}", localDateTime);
+        } else {
+            throwIfExistsWithRequestKey(requestKey, requestDateTimeCache);
+            requestDateTimeCache.remove(requestKey);
+            log.debug("Deleted cache with key: {}", requestKey);
+        }
     }
 }
